@@ -1,3 +1,4 @@
+
 #              PROGRAMS REQUIRED                  #
 
 
@@ -8,3 +9,6 @@
 
 
 Se a modificado el query de la base de datos y ademas simplicado el codigo, para hacerlo mas entendible, aun sigue en proceso la ordenacion del codigo
+=======
+# Proyecto-web
+>>>>>>> aa4c99c10b5af054eb08d90d2c636a8ca509bcf1
