@@ -853,7 +853,7 @@ app.post("/tickets/assign", (req, res) => {
       return res.status(500).json({ error: "error en la asignación" });
     }
     
-    // Si quieres que el ticket pase a 'in_progress', se hace en la tabla TICKETS
+   
     db.query("UPDATE tickets SET status = 'in_progress' WHERE id = ?", [ticket_id]);
 
     res.status(201).json({ message: "Ticket asignado al desarrollador " + user_id });
