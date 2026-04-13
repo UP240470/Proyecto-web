@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-04-2026 a las 12:19:42
+-- Tiempo de generación: 13-04-2026 a las 04:20:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,7 +39,9 @@ CREATE TABLE `careers` (
 
 INSERT INTO `careers` (`id`, `name`, `active`) VALUES
 (1, 'systems', 1),
-(2, 'commerce', 1);
+(2, 'TIID', 1),
+(3, 'mecatronics', 1),
+(4, 'merch', 0);
 
 -- --------------------------------------------------------
 
@@ -53,6 +55,13 @@ CREATE TABLE `categorias` (
   `description` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id`, `name`, `description`) VALUES
+(1, 'ingenieria', 'ingenieria');
+
 -- --------------------------------------------------------
 
 --
@@ -64,11 +73,19 @@ CREATE TABLE `tickets` (
   `title` varchar(50) NOT NULL,
   `description` text NOT NULL,
   `type_id` int(11) NOT NULL,
-  `status` enum('open','in_progress','closed') NOT NULL,
+  `status` enum('open','in_progress','closed') DEFAULT NULL,
   `priority` enum('low','medium','high') NOT NULL,
   `created_by` int(11) NOT NULL,
-  `created_at` datetime NOT NULL
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tickets`
+--
+
+INSERT INTO `tickets` (`id`, `title`, `description`, `type_id`, `status`, `priority`, `created_by`, `created_at`) VALUES
+(2, 'ticketb', 'aaaaa', 1, 'in_progress', 'medium', 1, '2026-04-13 02:47:25'),
+(3, 'ticketcc', 'ticket creado para alguien', 1, 'open', 'medium', 1, '2026-04-12 18:56:14');
 
 -- --------------------------------------------------------
 
@@ -82,6 +99,13 @@ CREATE TABLE `tickets_devs` (
   `assigned_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `tickets_devs`
+--
+
+INSERT INTO `tickets_devs` (`id_ticket`, `id_user`, `assigned_at`) VALUES
+(2, 1, '2026-04-12 20:14:11');
+
 -- --------------------------------------------------------
 
 --
@@ -94,6 +118,14 @@ CREATE TABLE `types` (
   `description` varchar(50) NOT NULL,
   `area` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `types`
+--
+
+INSERT INTO `types` (`id`, `type`, `description`, `area`) VALUES
+(1, 'tiid', 'ticket for tiid', 'systems'),
+(3, 'mecatronics', 'career mecatronics', 'ing');
 
 -- --------------------------------------------------------
 
@@ -144,7 +176,8 @@ ALTER TABLE `categorias`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `type_id` (`type_id`);
+  ADD KEY `type_id` (`type_id`),
+  ADD KEY `created_by` (`created_by`);
 
 --
 -- Indices de la tabla `tickets_devs`
@@ -176,25 +209,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `careers`
 --
 ALTER TABLE `careers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `types`
 --
 ALTER TABLE `types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -210,7 +243,8 @@ ALTER TABLE `users`
 -- Filtros para la tabla `tickets`
 --
 ALTER TABLE `tickets`
-  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`);
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`),
+  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`);
 
 --
 -- Filtros para la tabla `tickets_devs`
